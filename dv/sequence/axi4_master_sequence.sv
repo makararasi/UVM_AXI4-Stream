@@ -9,7 +9,7 @@ class axi4_master_sequence extends uvm_sequence#(axi4_master_seq_item);
     endfunction
    
     virtual task body();
-        repeat(1000)
+        repeat(`COUNT)
         begin
             req = axi4_master_seq_item::type_id::create("req");
             start_item(req);

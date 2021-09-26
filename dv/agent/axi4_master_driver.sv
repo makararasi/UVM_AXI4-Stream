@@ -3,7 +3,7 @@ class axi4_master_driver extends uvm_driver#(axi4_master_seq_item);
 
     `uvm_component_utils(axi4_master_driver)
 
-    virtual axi_intf vif;
+    virtual axi_intf#(`DATA_WIDTH) vif;
     bit tr_complete;
 
     function new(string name="axi4_master_driver", uvm_component parent = null);
@@ -12,7 +12,7 @@ class axi4_master_driver extends uvm_driver#(axi4_master_seq_item);
 
     function void build_phase(uvm_phase phase);
         super.build_phase(phase);
-	    if( !uvm_config_db#(virtual axi_intf)::get(this,"*", "vif", vif))
+	    if( !uvm_config_db#(virtual axi_intf#(`DATA_WIDTH))::get(this,"*", "vif", vif))
 		    `uvm_fatal(get_full_name(),{"virtual interface must be set for:",".mem_vif"} )
     endfunction
 

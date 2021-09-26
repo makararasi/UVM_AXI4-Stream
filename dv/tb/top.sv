@@ -24,15 +24,14 @@ module top ;
 
 
 
-    parameter global_data_width = 8;
     bit clk,rst;
-    axi_intf#(global_data_width) inf(clk,rst);
+    axi_intf#(`DATA_WIDTH) inf(clk,rst);
 
 /*----------------DUT_INSTANCE_START------------------*/
 
     `ifdef UART
      
-    uart #(global_data_width) UART_DUT( .clk(inf.clk),
+    uart #(`DATA_WIDTH) UART_DUT( .clk(inf.clk),
                                     .rst(inf.rst),
                                     .rxd(inf.txd),
                                     .txd(inf.txd),
@@ -75,8 +74,8 @@ module top ;
 
    initial
    begin
-       uvm_config_db#(virtual axi_intf)::set(null, "*", "vif", inf);
-       run_test("basic_test");
+       uvm_config_db#(virtual axi_intf#(`DATA_WIDTH))::set(null, "*", "vif", inf);
+       run_test();
    end
 
 

@@ -74,7 +74,7 @@ reg frame_error_reg = 0;
 
 reg [DATA_WIDTH-1:0] data_reg = 0;
 reg [18:0] prescale_reg = 0;
-reg [3:0] bit_cnt = 0;
+reg [$clog2(DATA_WIDTH):0] bit_cnt = 0;
 
 assign m_axis_tdata = m_axis_tdata_reg;
 assign m_axis_tvalid = m_axis_tvalid_reg;

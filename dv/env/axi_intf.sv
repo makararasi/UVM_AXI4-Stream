@@ -14,6 +14,7 @@ interface axi_intf #(parameter DATA_WIDTH = 8) (input clk,rst);
     logic                   m_axis_tvalid;
     logic                   m_axis_tready;
 
+    `ifdef UART
     /*
      * UART interface
      */
@@ -32,6 +33,7 @@ interface axi_intf #(parameter DATA_WIDTH = 8) (input clk,rst);
      * Configuration
      */
     logic [15:0]            prescale;
+    `endif
 
 
     `ifndef UART
