@@ -1,5 +1,5 @@
 
-class axi4_master_driver extends uvm_driver#(axi4_seq_item);
+class axi4_master_driver extends uvm_driver#(axi4_master_seq_item);
 
     `uvm_component_utils(axi4_master_driver)
 
@@ -39,7 +39,7 @@ class axi4_master_driver extends uvm_driver#(axi4_seq_item);
 	    end
     endtask
 
-    task drive_axi(axi4_seq_item req);
+    task drive_axi(axi4_master_seq_item req);
         repeat(req.clk_count - 2)
         begin
             @(posedge vif.clk);
