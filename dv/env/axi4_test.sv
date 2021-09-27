@@ -30,6 +30,7 @@ class basic_test extends uvm_test;
                   slave_seq.start(env.slave_agent.slave_seqr);
               end
           join_any
+          disable fork;
       end
       phase.drop_objection(this);
     endtask

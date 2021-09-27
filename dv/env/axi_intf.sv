@@ -3,16 +3,26 @@ interface axi_intf #(parameter DATA_WIDTH = 8) (input clk,rst);
     /*
      * AXI input
      */
-    logic [DATA_WIDTH-1:0]  s_axis_tdata;
-    logic                   s_axis_tvalid;
-    logic                   s_axis_tready;
+    logic [DATA_WIDTH-1:0]          s_axis_tdata;
+    logic                           s_axis_tvalid;
+    logic                           s_axis_tready;
 
+     /*
+      *  AXI Optional signals
+      */
+ 
+    logic [7:0]                     tid; //maximum 8 bits wide
+    logic                           tlast;
+    logic [3:0]                     tdest;
+    logic [DATA_WIDTH/8 - 1 :0]     tstrb;
+    logic [DATA_WIDTH/8 - 1 :0]     tkeep;
+    
     /*
      * AXI output
      */
-    logic [DATA_WIDTH-1:0]  m_axis_tdata;
-    logic                   m_axis_tvalid;
-    logic                   m_axis_tready;
+    logic [DATA_WIDTH-1:0]          m_axis_tdata;
+    logic                           m_axis_tvalid;
+    logic                           m_axis_tready;
 
     `ifdef UART
     /*

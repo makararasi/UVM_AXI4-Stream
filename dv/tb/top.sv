@@ -60,7 +60,9 @@ module top ;
 
     initial
     begin
-        inf.prescale = 8;    
+        `ifdef UART
+        inf.prescale = 1;
+        `endif    
         rst  =  1;
         #9 ;
         #2 rst  =  0; 

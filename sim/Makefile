@@ -11,7 +11,7 @@ vivado_build_tb:
 
 
 vivado_sim:
-	xsim  top -testplusarg UVM_TESTNAME=basic_test -testplusarg UVM_VERBOSITY=UVM_LOW -runall
+	xsim  top --sv_seed SEED=$(seed) -testplusarg UVM_TESTNAME=basic_test -testplusarg UVM_VERBOSITY=UVM_LOW -runall
 
 vivado_clean:
 	rm -rf xsim.dir webtalk* xelab* xvlog* xsim* *.log *.vcd *.wdb

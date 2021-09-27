@@ -4,6 +4,7 @@ class axi4_slave_driver extends uvm_driver#(axi4_slave_seq_item);
 
     virtual axi_intf#(`DATA_WIDTH) vif;
     bit tr_complete;
+    bit [31:0] ar[bit[6:0]][$];
     
 
     function new(string name="axi4_slave_driver", uvm_component parent = null);
@@ -20,13 +21,7 @@ class axi4_slave_driver extends uvm_driver#(axi4_slave_seq_item);
 	forever
 	    begin
 	        seq_item_port.get_next_item(req);
-            do begin
-                @(posedge vif.clk)
-                if(!vif.rst)
-                begin
-                    drive_axi(req); 
-                end
-            end while(vif.rst);
+            drive_axi(req); 
             this.tr_complete = 0;
 	        seq_item_port.item_done();
 	    end
@@ -35,16 +30,17 @@ class axi4_slave_driver extends uvm_driver#(axi4_slave_seq_item);
     task drive_axi(axi4_slave_seq_item req);
         do begin
             @(posedge vif.clk)
+            if(!vif.rst)
+            begin
             if(vif.m_axis_tvalid == 1)
             begin
                 vif.m_axis_tready <= 1;
-            end
-            else 
-            begin
-                vif.m_axis_tready <= 0;
                 this.tr_complete = 1;
+                ar[vif.tid].push_back(vif.s_axis_tdata);
+            end           
             end
-        end while(this.tr_complete);
+        end while(!this.tr_complete); 
+    @(posedge vif.clk)  vif.m_axis_tready <= 0;  
     endtask
 
 
