@@ -50,7 +50,9 @@ follow [this](https://www.koheron.com/support/tutorials/install-vivado-2017-1-ub
 (source /path/to/vivado/settings64.sh). I guess 64 means 64bit computer. This worked for me. Users should Workout theirs.  <br />
 Makefile inside sim folder has all the options for tool like **sv_seed**,**master_sequence_count**,**DATA_WIDTH**(which is parameter on interface and DUT).  <br />
 **Example command :-** ``` make vivado count=10 dataw=32 seed=$(random)``` runs "**basic_test**" which is a common ready-valid handshake where for each count 1 packet of transfers occur.for now it is sparse data stream. <br />
-UVM Environment has been tested for only 32 bit DATA_WIDTH.
+UVM Environment has been tested for only 32 bit DATA_WIDTH. <br />
+
+There is define for UART in **top.sv** which is when turned off then AXI_stream Master and Slave Communicates. Users can also replace their Slaves and Masters for testing <br />
 
 ***MORE TO COME***
 :)
