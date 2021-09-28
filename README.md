@@ -55,7 +55,7 @@ UVM Environment has been tested for only 32 bit DATA_WIDTH. <br />
 There is define for UART in **top.sv** which is when turned off then AXI_stream Master and Slave Communicates. Users can also replace their Slaves and Masters for testing <br />
 
 ***MORE TO COME***
-:)
+:)<br />
 
 
 
