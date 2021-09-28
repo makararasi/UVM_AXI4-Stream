@@ -56,9 +56,14 @@ class axi4_slave_driver extends uvm_driver#(axi4_slave_seq_item);
             count <= count + 1;
             if(!vif.rst)
             begin
+            if(req.ready_before_valid == 1'b1 && !vif.rst)
+                vif.m_axis_tready <= 1;
+            else if(req.ready_before_valid == 1'b0 && !vif.rst)
+                vif.m_axis_tready <= 0; 
             if(vif.m_axis_tvalid == 1)
             begin
                 local_ready_before_valid <= req.ready_before_valid;
+                $display("time \t",$time, "\tready_before_valid \t",req.ready_before_valid);
                 ar[vif.tid].push_back(vif.s_axis_tdata);
                 if(req.ready_before_valid == 1'b1)
                     vif.m_axis_tready <= 0;
@@ -75,11 +80,8 @@ class axi4_slave_driver extends uvm_driver#(axi4_slave_seq_item);
                     vif.m_axis_tready <= 0;
             end
         end while(!this.tr_complete && !vif.rst);
-        if(req.ready_before_valid == 1'b1 && !vif.rst)
-            @(posedge vif.clk) vif.m_axis_tready <= 1;
-        else if(req.ready_before_valid == 1'b0 && !vif.rst)
-            @(posedge vif.clk) vif.m_axis_tready <= 0;        
-
+        if(req.ready_before_valid == 1'b0 && !vif.rst)
+            @(posedge vif.clk) vif.m_axis_tready <= 0;
     endtask
 
 
