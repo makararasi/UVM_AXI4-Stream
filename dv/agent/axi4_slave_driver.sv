@@ -24,8 +24,10 @@ class axi4_slave_driver extends uvm_driver#(axi4_slave_seq_item);
     `uvm_component_utils(axi4_slave_driver)
 
     virtual axi_intf#(`DATA_WIDTH) vif;
-    bit tr_complete;
+    bit tr_complete,local_ready_before_valid;
     bit [31:0] ar[bit[6:0]][$];
+    bit stream_data[];
+    int count;
     
 
     function new(string name="axi4_slave_driver", uvm_component parent = null);
@@ -51,18 +53,35 @@ class axi4_slave_driver extends uvm_driver#(axi4_slave_seq_item);
     task drive_axi(axi4_slave_seq_item req);
         do begin
             @(posedge vif.clk)
+            count <= count + 1;
             if(!vif.rst)
             begin
             if(vif.m_axis_tvalid == 1)
             begin
-                vif.m_axis_tready <= 1;
-                this.tr_complete = 1;
+                local_ready_before_valid <= req.ready_before_valid;
                 ar[vif.tid].push_back(vif.s_axis_tdata);
-            end           
+                if(req.ready_before_valid == 1'b1)
+                    vif.m_axis_tready <= 0;
+                else
+                    vif.m_axis_tready <= 1; //put if else for ready before valid 
+                this.tr_complete = 1;
             end
-        end while(!this.tr_complete); 
-    @(posedge vif.clk)  vif.m_axis_tready <= 0;  
+            end
+            else
+            begin
+                if(req.ready_before_valid == 1'b1)
+                    vif.m_axis_tready <= 1;
+                else
+                    vif.m_axis_tready <= 0;
+            end
+        end while(!this.tr_complete && !vif.rst);
+        if(req.ready_before_valid == 1'b1 && !vif.rst)
+            @(posedge vif.clk) vif.m_axis_tready <= 1;
+        else if(req.ready_before_valid == 1'b0 && !vif.rst)
+            @(posedge vif.clk) vif.m_axis_tready <= 0;        
+
     endtask
+
 
 
 endclass : axi4_slave_driver

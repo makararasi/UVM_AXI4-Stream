@@ -33,10 +33,11 @@ class axi4_slave_sequence extends uvm_sequence#(axi4_slave_seq_item);
         begin
             req = axi4_slave_seq_item::type_id::create("req");
             start_item(req);
-            assert(req.randomize);
+            assert(req.randomize()with{ready_before_valid == 1;});
             finish_item(req);
         end
     endtask
    
 endclass : axi4_slave_sequence
+
 
