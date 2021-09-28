@@ -59,6 +59,20 @@ class axi4_master_seq_item extends uvm_sequence_item;
     constraint tkeep_data       { foreach(tkeep[i])
 
                                         tkeep[i] == {(`DATA_WIDTH/8){1'b1}}; } //later change this for null bytes
+    
+  //constraint tsrb_sparse      { tstrb.sum()with(int'(1 ? $countones(item) : 0)) > tstrb.sum()with(int '(1 ? ((`DATA_WIDTH/8)) - $countones(item) : 0)) ;} not working in vivado 2020.02 alternative is done
+
+  //constraint tstrb_sparse     {  foreach(tstrb[i]) $countones(tstrb[i]) > (`DATA_WIDTH/8) - $countones(tstrb[i]);   } not working in vivado 2020.02 alternative is done
+
+    constraint tstrb_sparse     {  foreach(tstrb[i])
+                                    {
+                                            tstrb[i] % 2 != 0;
+                                            tstrb[i] > 1;
+                                            ^tstrb[i] == 1;
+                                    }   
+                                }
+
+    
 
 
                                     //solve size      before  help_ar;
