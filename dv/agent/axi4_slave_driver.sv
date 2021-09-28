@@ -63,7 +63,6 @@ class axi4_slave_driver extends uvm_driver#(axi4_slave_seq_item);
             if(vif.m_axis_tvalid == 1)
             begin
                 local_ready_before_valid <= req.ready_before_valid;
-                $display("time \t",$time, "\tready_before_valid \t",req.ready_before_valid);
                 ar[vif.tid].push_back(vif.s_axis_tdata);
                 if(req.ready_before_valid == 1'b1)
                     vif.m_axis_tready <= 0;
