@@ -27,7 +27,8 @@ class basic_test extends uvm_test;
 
     axi4_env env;
     axi4_master_sanity_sequence master_seq;
-    axi4_slave_sanity_sequence  slave_seq; 
+    axi4_slave_sanity_sequence  slave_seq;
+    int Print_handle;
 
     function new(string name="basic_test", uvm_component parent = null);
         super.new(name, parent);
@@ -45,6 +46,7 @@ class basic_test extends uvm_test;
       begin
           fork
               begin
+                  master_seq.get_print(Print_handle);
                   master_seq.start(env.master_agent.master_seqr);
               end
               begin

@@ -25,22 +25,28 @@ class axi4_master_sanity_sequence extends uvm_sequence#(axi4_master_seq_item);
     `uvm_object_utils(axi4_master_sanity_sequence)
     axi4_master_seq_item req;
     process job1;
-    int count;
+    int count,Print_handle;
   
     function new(string name = "axi4_master_sanity_sequence");
         super.new(name);
     endfunction
-   
+    
+    function void get_print(int a);
+        this.Print_handle = a;
+    endfunction
+
     virtual task body();
         repeat(`COUNT)
         begin
             req  = axi4_master_seq_item::type_id::create("req");
-            $display(count, "\t^^^^^\t", $time);
+            req.get_print(this.Print_handle);
             start_item(req);
-            req.size_var.constraint_mode(0);
-            assert(req.randomize()with{size == 1;}); //single transfer per count 
+            req.size_var.constraint_mode(0); // turn on if needed packet transfer and also remove inline constraint
+            assert(req.randomize()with{size == 1;});//single transfer per count 
             finish_item(req);
+            $fdisplay(Print_handle,"|sequence_count\t",count, "\t|time\t" ,$time,"|");
             count = count + 1;
+            $fclose(Print_handle);
         end
     endtask
    

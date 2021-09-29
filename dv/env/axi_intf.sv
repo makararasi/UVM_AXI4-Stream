@@ -74,6 +74,11 @@ interface axi_intf #(parameter DATA_WIDTH = 8) (input clk,rst);
         assign s_axis_tready  = m_axis_tready;
     `endif
 
+    `ifndef UART
+        assert property((@(posedge clk) $rose(s_axis_tvalid) |-> s_axis_tvalid ##[0:16] s_axis_tready)); //16 clocks maximum time for ready to assert
+    `endif
+
+
 
 
 

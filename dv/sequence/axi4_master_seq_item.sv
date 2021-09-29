@@ -32,13 +32,15 @@ class axi4_master_seq_item extends uvm_sequence_item;
     rand    bit [(`DATA_WIDTH/8)-1 : 0]             tkeep[$];
     rand    bit                                     sparse_continuous_aligned_en;   // 0 -> sparse , 1-> continuous_aligned
 
+            int                                     Print_handle;
+
     //later add null bytes 
 
     //Utility and Field macros,
     `uvm_object_utils_begin(axi4_master_seq_item)
     `uvm_object_utils_end
   
-    constraint range            {   clk_count inside{[5:20]};    
+    constraint range            {   clk_count inside{[1:20]};    
                                 
                                 }  
     
@@ -73,7 +75,23 @@ class axi4_master_seq_item extends uvm_sequence_item;
     function new(string name = "axi4_master_seq_item");
         super.new(name);
     endfunction
+    
+    function void get_print(int a);
+        this.Print_handle = a;
+    endfunction
 
-  
-  
+    function void post_randomize();
+        Print_handle = $fopen("data_debug_dump.txt","ab");
+        foreach(tstrb[i,j])
+            begin
+            if(tstrb[i][j] == 1'b0)
+                data[i][(8*j+7)- :8] = j; 
+            $fdisplay(Print_handle,"|data_byte\t%b",data[i][(8*j+7)- : 8],"\t|time\t",$time, "\t|strb_bit\t\t",tstrb[i][j],"|");
+            end
+        foreach(tstrb[i])
+        begin
+            $fdisplay(Print_handle,"|id\t\t\t   ",this.id,"|data%h\t\t",this.data[i],"|tstrb%b\t\t\t",this.tstrb[i],"|tkeep\t\t %b",this.tkeep[i],"|tdest\t",this.dest,"\t|time\t",$time,"|");
+        end
+    endfunction
+
 endclass : axi4_master_seq_item

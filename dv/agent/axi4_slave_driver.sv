@@ -67,7 +67,10 @@ class axi4_slave_driver extends uvm_driver#(axi4_slave_seq_item);
                 if(req.ready_before_valid == 1'b1)
                     vif.m_axis_tready <= 0;
                 else
+                begin
+                    repeat(req.clk_count) @(posedge vif.clk);
                     vif.m_axis_tready <= 1; //put if else for ready before valid 
+                end 
                 this.tr_complete = 1;
             end
             end
