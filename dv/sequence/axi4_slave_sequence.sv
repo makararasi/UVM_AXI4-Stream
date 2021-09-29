@@ -19,12 +19,12 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. */
-class axi4_slave_sequence extends uvm_sequence#(axi4_slave_seq_item);
+class axi4_slave_sanity_sequence extends uvm_sequence#(axi4_slave_seq_item);
 
-    `uvm_object_utils(axi4_slave_sequence)
+    `uvm_object_utils(axi4_slave_sanity_sequence)
     axi4_slave_seq_item req;
   
-    function new(string name = "axi4_slave_sequence");
+    function new(string name = "axi4_slave_sanity_sequence");
         super.new(name);
     endfunction
    
@@ -38,6 +38,6 @@ class axi4_slave_sequence extends uvm_sequence#(axi4_slave_seq_item);
         end
     endtask
    
-endclass : axi4_slave_sequence
+endclass : axi4_slave_sanity_sequence
 
 

@@ -29,7 +29,8 @@ class axi4_master_seq_item extends uvm_sequence_item;
     randc   bit [3:0]                               dest;
     rand    bit [5:0]                               size;
     rand    bit [(`DATA_WIDTH/8)-1 : 0]             tstrb[$];
-    rand    bit [(`DATA_WIDTH/8)-1 : 0]             tkeep[$];  
+    rand    bit [(`DATA_WIDTH/8)-1 : 0]             tkeep[$];
+    rand    bit                                     sparse_continuous_aligned_en;   // 0 -> sparse , 1-> continuous_aligned
 
     //later add null bytes 
 
@@ -45,43 +46,28 @@ class axi4_master_seq_item extends uvm_sequence_item;
                                     tstrb.size      == this.size;
                                     tkeep.size      == this.size;
                                 }
-                                    //help_ar.size== this.size;    }
+                                    
+    constraint size_var         {   size inside{[2:10]};        } 
 
-    constraint size_var         {   size inside{[1:10]};         
-                                
-                                } //
-
-    constraint order            {   solve size      before  data ;
-                                    solve size      before  tstrb;
-                                    solve size      before  tkeep; 
+    constraint order            {   solve size                          before  data ;
+                                    solve size                          before  tstrb;
+                                    solve size                          before  tkeep;
+                                    solve sparse_continuous_aligned_en  before  tstrb;
+                                    solve sparse_continuous_aligned_en  before  tkeep;
                                 }
     
-    constraint tkeep_data       { foreach(tkeep[i])
-
-                                        tkeep[i] == {(`DATA_WIDTH/8){1'b1}}; } //later change this for null bytes
+    constraint tkeep_sparse_continuous_aligned_stream       { foreach(tkeep[i]) tkeep[i] == {(`DATA_WIDTH/8){1'b1}}; } //later change this for null bytes
     
   //constraint tsrb_sparse      { tstrb.sum()with(int'(1 ? $countones(item) : 0)) > tstrb.sum()with(int '(1 ? ((`DATA_WIDTH/8)) - $countones(item) : 0)) ;} not working in vivado 2020.02 alternative is done
 
   //constraint tstrb_sparse     {  foreach(tstrb[i]) $countones(tstrb[i]) > (`DATA_WIDTH/8) - $countones(tstrb[i]);   } not working in vivado 2020.02 alternative is done
 
-    constraint tstrb_sparse     {  foreach(tstrb[i])
-                                    {
-                                            tstrb[i] % 2 != 0;
-                                            tstrb[i] > 1;
-                                            ^tstrb[i] == 1;
-                                    }   
-                                }
-
-    
-
-
-                                    //solve size      before  help_ar;
-                                    //solve help_ar   before  tstrb;  }
-
-    //   constraint help_ar_data     {   (size == 1) -> help_ar.sum()with(item) == inside{[0:1]}; 
-    //                                  (size >  1) -> help_ar.sum()with(item) == inside{[0:size -1]};  }
-                        
-    
+    constraint tstrb_sparse_continuous_aligned_stream       {   
+                                                                if(sparse_continuous_aligned_en == 1'b0) 
+                                                                    foreach(tstrb[i]) {tstrb[i] % 2 != 0; tstrb[i] > 1; ^tstrb[i] == 1;}
+                                                                else if(sparse_continuous_aligned_en == 1'b1)  
+                                                                    foreach(tstrb[i]) {tstrb[i] == {(`DATA_WIDTH/8){1'b1}};   }
+                                                            }    
 
     //Constructor
     function new(string name = "axi4_master_seq_item");

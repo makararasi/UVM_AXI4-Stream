@@ -24,7 +24,7 @@ SOFTWARE. */
 class axi4_slave_seq_item extends uvm_sequence_item;
 
     
-    randc bit ready_before_valid;
+    randc bit ready_before_valid; // 0-> valid before ready , 1->ready before valid
     randc int clk_count;
     //Utility and Field macros,
     `uvm_object_utils_begin(axi4_slave_seq_item)

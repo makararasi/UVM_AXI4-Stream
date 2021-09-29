@@ -26,8 +26,8 @@ class basic_test extends uvm_test;
     `uvm_component_utils(basic_test)
 
     axi4_env env;
-    axi4_master_sequence master_seq;
-    axi4_slave_sequence  slave_seq; 
+    axi4_master_sanity_sequence master_seq;
+    axi4_slave_sanity_sequence  slave_seq; 
 
     function new(string name="basic_test", uvm_component parent = null);
         super.new(name, parent);
@@ -36,8 +36,8 @@ class basic_test extends uvm_test;
     function void build_phase(uvm_phase phase);
         super.build_phase(phase);
         env = axi4_env::type_id::create("env", this);
-        master_seq = axi4_master_sequence::type_id::create("master_seq", this);
-        slave_seq  = axi4_slave_sequence::type_id::create("slave_seq", this);
+        master_seq = axi4_master_sanity_sequence::type_id::create("master_seq", this);
+        slave_seq  = axi4_slave_sanity_sequence::type_id::create("slave_seq", this);
     endfunction
 
     task run_phase(uvm_phase phase);

@@ -20,14 +20,14 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. */
 
-class axi4_master_sequence extends uvm_sequence#(axi4_master_seq_item);
+class axi4_master_sanity_sequence extends uvm_sequence#(axi4_master_seq_item);
 
-    `uvm_object_utils(axi4_master_sequence)
+    `uvm_object_utils(axi4_master_sanity_sequence)
     axi4_master_seq_item req;
     process job1;
     int count;
   
-    function new(string name = "axi4_master_sequence");
+    function new(string name = "axi4_master_sanity_sequence");
         super.new(name);
     endfunction
    
@@ -37,11 +37,14 @@ class axi4_master_sequence extends uvm_sequence#(axi4_master_seq_item);
             req  = axi4_master_seq_item::type_id::create("req");
             $display(count, "\t^^^^^\t", $time);
             start_item(req);
-            assert(req.randomize);
+            req.size_var.constraint_mode(0);
+            assert(req.randomize()with{size == 1;}); //single transfer per count 
             finish_item(req);
             count = count + 1;
         end
     endtask
    
-endclass : axi4_master_sequence
+endclass : axi4_master_sanity_sequence
+
+
 
