@@ -68,6 +68,8 @@ Makefile inside sim folder has all the options for tool like **sv_seed**,**maste
 UVM Environment has been tested for only 32 bit DATA_WIDTH. <br />
 
 There is define for UART in **top.sv** which is when turned off then AXI_stream Master and Slave Communicates. Users can also replace their Slaves and Masters for testing <br />
+## Waveform <br />
+![Alt text](./images/axi.png?raw=true" "Valid_Before_Ready") <br />
 
 ***MORE TO COME***
 :)<br />
