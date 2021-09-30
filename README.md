@@ -36,6 +36,19 @@ verilog-uart-master <br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|___uart_tx.v <br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|___uart_tx.v <br />
 ___
+## Feature Set
+* Ready_before_valid.
+* Valid_before_ready.
+* Randomized Ready_before_valid and Valid_before_ready.
+* Single transfer per master sequence count.
+* Packet transfer per master sequence count.
+* Continuous aligned stream per master sequence count.
+* Continuous unaligned stream per master sequence count.
+* Sparse stream per master sequence count.
+* Position byte updation in stream(packet) per master sequence count.
+* Slave ready assertion randomized between 1 to 16 clocks.
+* Interleaving of streams(packets)[**TO-DO**].
+___ 
 ## Working of UVM Environment <br />
 ### Introduction <br />
 Firstly, I took [DUT](https://github.com/alexforencich/verilog-uart) for testing purposes which is a **UART** module with AXI-Stream user interface. This DUT consisted of default AXI-stream signals to communicate to and fro. DUT has both Tx and Rx instansiated inside which means user can repalce any of these two with user specific Tx or Rx if they are compatible. Inside Top module Tx is Driven by AXI-stream Master and Rx Drives AXI-stream Slave.  
