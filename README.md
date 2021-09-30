@@ -36,7 +36,8 @@ verilog-uart-master <br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|___uart_tx.v <br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|___uart_tx.v <br />
 ___
-## Feature Set
+## Feature Set <br />
+* Posedge clk and Posedge rst
 * Ready_before_valid.
 * Valid_before_ready.
 * Randomized Ready_before_valid and Valid_before_ready.
