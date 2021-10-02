@@ -26,6 +26,8 @@ class axi4_master_driver extends uvm_driver#(axi4_master_seq_item);
 
     virtual axi_intf#(`DATA_WIDTH) vif;
     bit tr_complete;
+    int Print_handle;
+    int debug_count;
 
     function new(string name="axi4_master_driver", uvm_component parent = null);
         super.new(name, parent);
@@ -35,13 +37,18 @@ class axi4_master_driver extends uvm_driver#(axi4_master_seq_item);
         super.build_phase(phase);
 	    if( !uvm_config_db#(virtual axi_intf#(`DATA_WIDTH))::get(this,"*", "vif", vif))
 		    `uvm_fatal(get_full_name(),{"virtual interface must be set for:",".mem_vif"} )
+        if( !uvm_config_db#(int)::get(this,"*", "handle", Print_handle))
+		    `uvm_fatal(get_full_name(),{"pront handle must be set for in masterdriver:",".Print_handle"} )
+
     endfunction
 
     task run_phase(uvm_phase phase);
 	forever
 	    begin
 	        seq_item_port.get_next_item(req);
-            drive_axi(req); 
+            pre_req();
+            drive_axi(req);
+            debug_count =  0; 
 	        seq_item_port.item_done();
 	    end
     endtask
@@ -56,6 +63,7 @@ class axi4_master_driver extends uvm_driver#(axi4_master_seq_item);
                     @(posedge vif.clk);
                     end
                     vif.s_axis_tvalid   <= 1;
+                    print_debug();
                     vif.s_axis_tdata    <= req.data.pop_front;
                     vif.tid             <= req.id;
                     vif.tdest           <= req.dest;
@@ -64,6 +72,7 @@ class axi4_master_driver extends uvm_driver#(axi4_master_seq_item);
                     if(req.data.size == 0 && req.size > 1)
                     begin
                     vif.tlast <= 1;
+                    debug_count = 0;
                     end
                     do begin 
                         @(posedge vif.clk);
@@ -77,6 +86,7 @@ class axi4_master_driver extends uvm_driver#(axi4_master_seq_item);
                             vif.tstrb           <= 0;
                             vif.s_axis_tdata    <= 0;
                             tr_complete = 1;
+                            debug_count = debug_count + 1;
                             end
                     end
                     while(!tr_complete && !vif.rst);
@@ -104,5 +114,20 @@ class axi4_master_driver extends uvm_driver#(axi4_master_seq_item);
         end while(!req.data.size == 0 && !vif.rst);
     endtask
 
+    function void pre_req();
+        foreach(req.tstrb[i,j])
+            begin
+            if(req.tstrb[i][j] == 1'b0)
+                req.data[i][(8*j+7)- :8] = j; 
+            end
+    endfunction
+
+    function void print_debug();
+        Print_handle = $fopen("data_debug_dump.txt","ab");
+        for(int j = 3; j>=0; j--)
+            $fdisplay(Print_handle,"|data_byte\t%b",req.data[0][(8*j+7)- : 8],"\t|time\t",$time, "\t|strb_bit\t\t",req.tstrb[0][j],"|","\t\t");
+        $fdisplay(Print_handle,"|id\t\t\t   ",this.req.id,"|data\t\t%h",this.req.data[0],"|tstrb\t\t\t%b",this.req.tstrb[0],"|tkeep\t\t %b",this.req.tkeep[0],"|tdest\t",this.req.dest,"\t|time\t",$time,"|");
+        $fclose(Print_handle);
+    endfunction
 
 endclass : axi4_master_driver

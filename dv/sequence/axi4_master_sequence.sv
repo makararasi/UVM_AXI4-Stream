@@ -39,11 +39,10 @@ class axi4_master_sanity_sequence extends uvm_sequence#(axi4_master_seq_item);
         repeat(`COUNT)
         begin
             req  = axi4_master_seq_item::type_id::create("req");
-            req.get_print(this.Print_handle);
             start_item(req);
-            req.size_var.constraint_mode(0); // turn on if needed packet transfer and also remove inline constraint
-            assert(req.randomize()with{size == 1;});//single transfer per count 
+            assert(req.randomize());//with{size == 1;});//single transfer per count 
             finish_item(req);
+            Print_handle = $fopen("data_debug_dump.txt","ab"); 
             $fdisplay(Print_handle,"|sequence_count\t",count, "\t|time\t" ,$time,"|");
             count = count + 1;
             $fclose(Print_handle);

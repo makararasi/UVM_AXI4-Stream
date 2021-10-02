@@ -30,9 +30,8 @@ class axi4_master_seq_item extends uvm_sequence_item;
     rand    bit [5:0]                               size;
     rand    bit [(`DATA_WIDTH/8)-1 : 0]             tstrb[$];
     rand    bit [(`DATA_WIDTH/8)-1 : 0]             tkeep[$];
-    rand    bit                                     sparse_continuous_aligned_en;   // 0 -> sparse , 1-> continuous_aligned
+    rand    bit                                     sparse_continuous_aligned_en;   //1  -> sparse , 0-> continuous_aligned
 
-            int                                     Print_handle;
 
     //later add null bytes 
 
@@ -49,7 +48,7 @@ class axi4_master_seq_item extends uvm_sequence_item;
                                     tkeep.size      == this.size;
                                 }
                                     
-    constraint size_var         {   size inside{[2:10]};        } 
+    constraint size_var         {   size inside{[1:10]};        } 
 
     constraint order            {   solve size                          before  data ;
                                     solve size                          before  tstrb;
@@ -65,9 +64,9 @@ class axi4_master_seq_item extends uvm_sequence_item;
   //constraint tstrb_sparse     {  foreach(tstrb[i]) $countones(tstrb[i]) > (`DATA_WIDTH/8) - $countones(tstrb[i]);   } not working in vivado 2020.02 alternative is done
 
     constraint tstrb_sparse_continuous_aligned_stream       {   
-                                                                if(sparse_continuous_aligned_en == 1'b0) 
+                                                                if(sparse_continuous_aligned_en == 1'b1) 
                                                                     foreach(tstrb[i]) {tstrb[i] % 2 != 0; tstrb[i] > 1; ^tstrb[i] == 1;}
-                                                                else if(sparse_continuous_aligned_en == 1'b1)  
+                                                                else if(sparse_continuous_aligned_en == 1'b0)  
                                                                     foreach(tstrb[i]) {tstrb[i] == {(`DATA_WIDTH/8){1'b1}};   }
                                                             }    
 
@@ -76,22 +75,6 @@ class axi4_master_seq_item extends uvm_sequence_item;
         super.new(name);
     endfunction
     
-    function void get_print(int a);
-        this.Print_handle = a;
-    endfunction
 
-    function void post_randomize();
-        Print_handle = $fopen("data_debug_dump.txt","ab");
-        foreach(tstrb[i,j])
-            begin
-            if(tstrb[i][j] == 1'b0)
-                data[i][(8*j+7)- :8] = j; 
-            $fdisplay(Print_handle,"|data_byte\t%b",data[i][(8*j+7)- : 8],"\t|time\t",$time, "\t|strb_bit\t\t",tstrb[i][j],"|");
-            end
-        foreach(tstrb[i])
-        begin
-            $fdisplay(Print_handle,"|id\t\t\t   ",this.id,"|data%h\t\t",this.data[i],"|tstrb%b\t\t\t",this.tstrb[i],"|tkeep\t\t %b",this.tkeep[i],"|tdest\t",this.dest,"\t|time\t",$time,"|");
-        end
-    endfunction
 
 endclass : axi4_master_seq_item

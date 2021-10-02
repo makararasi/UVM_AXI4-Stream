@@ -28,7 +28,7 @@ class axi4_slave_driver extends uvm_driver#(axi4_slave_seq_item);
     bit [31:0] ar[bit[6:0]][$];
     bit stream_data[];
     int count;
-    
+    int Print_handle; 
 
     function new(string name="axi4_slave_driver", uvm_component parent = null);
         super.new(name, parent);
@@ -38,6 +38,8 @@ class axi4_slave_driver extends uvm_driver#(axi4_slave_seq_item);
         super.build_phase(phase);
 	    if( !uvm_config_db#(virtual axi_intf#(`DATA_WIDTH))::get(this,"*", "vif", vif))
 		    `uvm_fatal(get_full_name(),{"virtual interface must be set for:",".mem_vif"} )
+        if( !uvm_config_db#(int)::get(this,"*", "handle", Print_handle))
+		    `uvm_fatal(get_full_name(),{"pront handle must be set for in slave :",".Print_handle"} )
     endfunction
 
     task run_phase(uvm_phase phase);

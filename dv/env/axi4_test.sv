@@ -36,6 +36,7 @@ class basic_test extends uvm_test;
 
     function void build_phase(uvm_phase phase);
         super.build_phase(phase);
+        uvm_config_db#(int)::set(this, "*", "handle", Print_handle);
         env = axi4_env::type_id::create("env", this);
         master_seq = axi4_master_sanity_sequence::type_id::create("master_seq", this);
         slave_seq  = axi4_slave_sanity_sequence::type_id::create("slave_seq", this);
