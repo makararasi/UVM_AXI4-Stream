@@ -56,7 +56,7 @@ class axi4_master_driver extends uvm_driver#(axi4_master_seq_item);
     task drive_axi(axi4_master_seq_item req);
         do begin
             @(posedge vif.clk)
-                if(!vif.rst)
+                if(vif.rst)
                 begin
                     repeat(req.clk_count)
                     begin
@@ -65,13 +65,13 @@ class axi4_master_driver extends uvm_driver#(axi4_master_seq_item);
                     vif.s_axis_tvalid   <= 1;
                     print_debug();
                     vif.s_axis_tdata    <= req.data.pop_front;
-                    vif.tid             <= req.id;
-                    vif.tdest           <= req.dest;
-                    vif.tkeep           <= req.tkeep.pop_front;
-                    vif.tstrb           <= req.tstrb.pop_front; 
+                    vif.s_tid            <= req.id;
+                    vif.s_tdest           <= req.dest;
+                    vif.s_tkeep           <= req.tkeep.pop_front;
+                    vif.s_tstrb           <= req.tstrb.pop_front; 
                     if(req.data.size == 0 && req.size > 1)
                     begin
-                    vif.tlast <= 1;
+                    vif.s_tlast <= 1;
                     debug_count = 0;
                     end
                     do begin 
@@ -79,17 +79,17 @@ class axi4_master_driver extends uvm_driver#(axi4_master_seq_item);
                             if(vif.s_axis_tvalid && vif.s_axis_tready)    //AXI MAster PART
                             begin
                             vif.s_axis_tvalid   <= 0;
-                            vif.tlast           <= 0;
-                            vif.tid             <= 0;
-                            vif.tdest           <= 0;
-                            vif.tkeep           <= 0;
-                            vif.tstrb           <= 0;
+                            vif.s_tlast           <= 0;
+                            vif.s_tid            <= 0;
+                            vif.s_tdest           <= 0;
+                            vif.s_tkeep           <= 0;
+                            vif.s_tstrb           <= 0;
                             vif.s_axis_tdata    <= 0;
                             tr_complete = 1;
                             debug_count = debug_count + 1;
                             end
                     end
-                    while(!tr_complete && !vif.rst);
+                    while(!tr_complete && vif.rst);
 
                     /*------------------------------------*/
                     `ifdef UART
@@ -103,15 +103,15 @@ class axi4_master_driver extends uvm_driver#(axi4_master_seq_item);
                 else
                 begin
                     vif.s_axis_tvalid   <= 0;
-                    vif.tlast           <= 0;
-                    vif.tid             <= 0;
-                    vif.tdest           <= 0;
-                    vif.tkeep           <= 0;
-                    vif.tstrb           <= 0;
+                    vif.s_tlast           <= 0;
+                    vif.s_tid            <= 0;
+                    vif.s_tdest           <= 0;
+                    vif.s_tkeep           <= 0;
+                    vif.s_tstrb           <= 0;
                     vif.s_axis_tdata    <= 0;
                 end
 
-        end while(!req.data.size == 0 && !vif.rst);
+        end while(!req.data.size == 0 && vif.rst);
     endtask
 
     function void pre_req();

@@ -69,7 +69,8 @@ module top ;
                                     .rx_frame_error(inf.rx_frame_error)
                                           
                                     );
-    `endif   
+    `endif
+
 
 /*------------------DUT_INSTANCE_END---------------*/
 
@@ -84,9 +85,9 @@ module top ;
         `ifdef UART
         inf.prescale = 1;
         `endif    
-        rst  =  1;
+        rst  =  0;
         #9 ;
-        #2 rst  =  0; 
+        #2 rst  =  1; 
     end
 
     initial
@@ -103,3 +104,6 @@ module top ;
 
 
 endmodule
+
+
+
