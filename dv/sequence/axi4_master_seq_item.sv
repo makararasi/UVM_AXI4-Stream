@@ -31,7 +31,7 @@ class axi4_master_seq_item extends uvm_sequence_item;
     rand    bit [(`DATA_WIDTH/8)-1 : 0]             tstrb[$];
     rand    bit [(`DATA_WIDTH/8)-1 : 0]             tkeep[$];
     rand    bit                                     sparse_continuous_aligned_en;   //1  -> sparse , 0-> continuous_aligned
-
+    rand    bit                                     interleave_en;
 
     //later add null bytes 
 
@@ -68,7 +68,7 @@ class axi4_master_seq_item extends uvm_sequence_item;
                                                                     foreach(tstrb[i]) {tstrb[i] % 2 != 0; tstrb[i] > 1; ^tstrb[i] == 1;}
                                                                 else if(sparse_continuous_aligned_en == 1'b0)  
                                                                     foreach(tstrb[i]) {tstrb[i] == {(`DATA_WIDTH/8){1'b1}};   }
-                                                            }    
+                                                              }    
 
     //Constructor
     function new(string name = "axi4_master_seq_item");

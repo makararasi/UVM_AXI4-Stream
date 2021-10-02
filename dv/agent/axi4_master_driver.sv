@@ -25,9 +25,15 @@ class axi4_master_driver extends uvm_driver#(axi4_master_seq_item);
     `uvm_component_utils(axi4_master_driver)
 
     virtual axi_intf#(`DATA_WIDTH) vif;
-    bit tr_complete;
-    int Print_handle;
-    int debug_count;
+    bit                                     tr_complete;
+    int                                     Print_handle;
+    int                                     clk_count[int];
+    bit [(`DATA_WIDTH)-1 : 0]               data[int][$];
+    bit [3:0]                               dest[int];
+    bit [5:0]                               size[int];
+    bit [(`DATA_WIDTH/8)-1 : 0]             tstrb[int][$];
+    bit [(`DATA_WIDTH/8)-1 : 0]             tkeep[int][$];
+    int                                     interleave_id[$],interleave_count,interleave_help[],interleave_help_id[$];
 
     function new(string name="axi4_master_driver", uvm_component parent = null);
         super.new(name, parent);
@@ -46,15 +52,63 @@ class axi4_master_driver extends uvm_driver#(axi4_master_seq_item);
 	forever
 	    begin
 	        seq_item_port.get_next_item(req);
-            pre_req();
-            drive_axi(req);
-            debug_count =  0; 
-	        seq_item_port.item_done();
+            if(interleave_count <= 3 && req.interleave_en == 1) //5 is the interleavig depth and interleave enable should be high for at least 5 times inorder to interleave
+            begin
+                interleave_count = interleave_count + 1;
+                data[req.id]    = req.data;
+                dest[req.id]    = req.dest;
+                size[req.id]    = req.size;
+                tstrb[req.id]   = req.tstrb;
+                tkeep[req.id]   = req.tkeep;
+            end
+            else
+            begin
+                data[req.id]       = req.data;
+                dest[req.id]       = req.dest;
+                size[req.id]       = req.size;
+                tstrb[req.id]      = req.tstrb;
+                tkeep[req.id]      = req.tkeep;
+                foreach(size[i])
+                begin
+                for(int j = 0; j<size[i]; j++)
+                begin
+                    interleave_id.push_back(i);
+                end
+                end
+                //if(interleave_count == 4)
+                assert(std::randomize(interleave_help)with{ interleave_help.size == interleave_id.size;
+                                                            foreach(interleave_help[i]){
+                                                            foreach(interleave_help[j]){
+                                                                if(i!=j)
+                                                                    interleave_help[i] != interleave_help[j]; }}});
+                //interleave_id.shuffle();
+                foreach(interleave_help[i])
+                begin
+                    interleave_help_id.push_back(interleave_id[interleave_help[i]]);
+                end
+                $display("^^^^^^^^shuffled\t%p",interleave_help_id, "^^^^^^^^^^normal\t%p",interleave_id,"^^^^index_shuffle\t%p",interleave_help);
+                //interleave_id = {interleave_help_id};
+                drive_axi(req);
+                interleave_id = '{};
+                interleave_help_id = '{};
+                interleave_help.delete();
+                size.delete();// = null; 
+                dest.delete();
+                tstrb.delete();  //delete all interleave data structures
+                tkeep.delete();
+                data.delete();
+                clk_count.delete();
+                interleave_count = 0; 
+            end
+            seq_item_port.item_done();
 	    end
     endtask
 
     task drive_axi(axi4_master_seq_item req);
+        int temp_id;
+        pre_req();
         do begin
+            temp_id = interleave_id.pop_front(); 
             @(posedge vif.clk)
                 if(vif.rst)
                 begin
@@ -63,16 +117,16 @@ class axi4_master_driver extends uvm_driver#(axi4_master_seq_item);
                     @(posedge vif.clk);
                     end
                     vif.s_axis_tvalid   <= 1;
-                    print_debug();
-                    vif.s_axis_tdata    <= req.data.pop_front;
-                    vif.s_tid            <= req.id;
-                    vif.s_tdest           <= req.dest;
-                    vif.s_tkeep           <= req.tkeep.pop_front;
-                    vif.s_tstrb           <= req.tstrb.pop_front; 
-                    if(req.data.size == 0 && req.size > 1)
+                    //print_debug();
+                    $display("$$$$$$$$$$$$$\t",interleave_id.size,"\ttime",$time,"\tsize\t%p",size);
+                    vif.s_axis_tdata    <= data[temp_id].pop_front();
+                    vif.s_tid            <= temp_id;
+                    vif.s_tdest           <= dest[temp_id];
+                    vif.s_tkeep           <= tkeep[temp_id].pop_front();
+                    vif.s_tstrb           <= tstrb[temp_id].pop_front(); 
+                    if(data[temp_id].size == 0 && size[temp_id] > 1)
                     begin
                     vif.s_tlast <= 1;
-                    debug_count = 0;
                     end
                     do begin 
                         @(posedge vif.clk);
@@ -86,7 +140,6 @@ class axi4_master_driver extends uvm_driver#(axi4_master_seq_item);
                             vif.s_tstrb           <= 0;
                             vif.s_axis_tdata    <= 0;
                             tr_complete = 1;
-                            debug_count = debug_count + 1;
                             end
                     end
                     while(!tr_complete && vif.rst);
@@ -111,14 +164,14 @@ class axi4_master_driver extends uvm_driver#(axi4_master_seq_item);
                     vif.s_axis_tdata    <= 0;
                 end
 
-        end while(!req.data.size == 0 && vif.rst);
+        end while(!interleave_id.size == 0 && vif.rst);
     endtask
 
     function void pre_req();
-        foreach(req.tstrb[i,j])
+        foreach(tstrb[i,j,k])
             begin
-            if(req.tstrb[i][j] == 1'b0)
-                req.data[i][(8*j+7)- :8] = j; 
+            if(tstrb[i][j][k] == 1'b0)
+                data[i][j][(8*k+7)- :8] = k; 
             end
     endfunction
 
