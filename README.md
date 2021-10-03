@@ -48,7 +48,7 @@ ___
 * Sparse stream per master sequence count.
 * Position byte updation in stream(packet) per master sequence count.
 * Slave ready assertion randomized between 1 to 16 clocks.
-* Interleaving of streams(packets)[**TO-DO**].
+* Interleaving of streams(packets)[**TO-DO**][**This is updated in second branch as vivado doesn't support certain system verilog feature**] .
 ___ 
 ## Working of UVM Environment <br />
 ### Introduction <br />
