@@ -1,0 +1,294 @@
+# vsim -c top "+UVM_TESTNAME=basic_test" -voptargs="+acc=npr" -do "run -a; q" 
+# Start time: 01:16:22 on Apr 24,2022
+# ** Note: (vsim-3812) Design is being optimized...
+# //  Questa Sim-64
+# //  Version 2019.2_1 linux_x86_64 May 13 2019
+# //
+# //  Copyright 1991-2019 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  QuestaSim and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# Loading sv_std.std
+# Loading mtiUvm.uvm_pkg
+# Loading work.top_sv_unit(fast)
+# Loading mtiUvm.questa_uvm_pkg(fast)
+# Loading work.top(fast)
+# Loading work.axi_intf(fast)
+# Loading work.uart(fast)
+# Loading work.uart_tx(fast)
+# Loading work.uart_rx(fast)
+# Loading work.axi_intf(fast)
+# Loading /pkgs/mentor/questa/2019.2_1/questasim/uvm-1.1d/linux_x86_64/uvm_dpi.so
+# run -a
+# ----------------------------------------------------------------
+# UVM-1.1d
+# (C) 2007-2013 Mentor Graphics Corporation
+# (C) 2007-2013 Cadence Design Systems, Inc.
+# (C) 2006-2013 Synopsys, Inc.
+# (C) 2011-2013 Cypress Semiconductor Corp.
+# ----------------------------------------------------------------
+# 
+#   ***********       IMPORTANT RELEASE NOTES         ************
+# 
+#   You are using a version of the UVM library that has been compiled
+#   with `UVM_NO_DEPRECATED undefined.
+#   See http://www.eda.org/svdb/view.php?id=3313 for more details.
+# 
+#   You are using a version of the UVM library that has been compiled
+#   with `UVM_OBJECT_MUST_HAVE_CONSTRUCTOR undefined.
+#   See http://www.eda.org/svdb/view.php?id=3770 for more details.
+# 
+#       (Specify +UVM_NO_RELNOTES to turn off this notice)
+# 
+# UVM_INFO verilog_src/questa_uvm_pkg-1.2/src/questa_uvm_pkg.sv(277) @ 0: reporter [Questa UVM] QUESTA_UVM-1.2.3
+# UVM_INFO verilog_src/questa_uvm_pkg-1.2/src/questa_uvm_pkg.sv(278) @ 0: reporter [Questa UVM]  questa_uvm::init(+struct)
+# UVM_INFO @ 0: reporter [RNTST] Running test basic_test...
+# enetering into seq start of master and slave
+# UVM_INFO ../dv/tb/./../agent/axi4_slave_agent.sv(44) @ 0: uvm_test_top.env.slave_agent [AGENT] Agent in place
+# entering into slave driver 
+# UVM_INFO ../dv/tb/./../agent/axi4_master_agent.sv(44) @ 0: uvm_test_top.env.master_agent [AGENT] Agent in place
+# enetering into master driver
+# leaving from slave driver for next transaction
+# entering into slave driver 
+# leaving from master driver in axi task
+# leavig for next transaction from master driver
+# enetering into master driver
+# enetred into drive axi master
+# enetered ready
+# leaving from slave driver for next transaction
+# entering into slave driver 
+# leaving from master driver in axi task
+# enetred into drive axi master
+# enetered ready
+# leaving from slave driver for next transaction
+# entering into slave driver 
+# leaving from master driver in axi task
+# enetred into drive axi master
+# enetered ready
+# leaving from slave driver for next transaction
+# entering into slave driver 
+# leaving from master driver in axi task
+# enetred into drive axi master
+# leaving from slave driver for next transaction
+# entering into slave driver 
+# leaving from master driver in axi task
+# leavig for next transaction from master driver
+# enetering into master driver
+# enetred into drive axi master
+# leaving from slave driver for next transaction
+# entering into slave driver 
+# leaving from master driver in axi task
+# enetred into drive axi master
+# leaving from slave driver for next transaction
+# entering into slave driver 
+# leaving from master driver in axi task
+# enetred into drive axi master
+# leaving from slave driver for next transaction
+# entering into slave driver 
+# leaving from master driver in axi task
+# enetred into drive axi master
+# enetered ready
+# leaving from slave driver for next transaction
+# entering into slave driver 
+# leaving from master driver in axi task
+# enetred into drive axi master
+# leaving from slave driver for next transaction
+# entering into slave driver 
+# leaving from master driver in axi task
+# enetred into drive axi master
+# enetered ready
+# leaving from slave driver for next transaction
+# entering into slave driver 
+# leaving from master driver in axi task
+# enetred into drive axi master
+# enetered ready
+# leaving from slave driver for next transaction
+# entering into slave driver 
+# leaving from master driver in axi task
+# enetred into drive axi master
+# leaving from slave driver for next transaction
+# entering into slave driver 
+# leaving from master driver in axi task
+# enetred into drive axi master
+# leaving from slave driver for next transaction
+# entering into slave driver 
+# leaving from master driver in axi task
+# leavig for next transaction from master driver
+# enetering into master driver
+# enetred into drive axi master
+# leaving from slave driver for next transaction
+# entering into slave driver 
+# leaving from master driver in axi task
+# enetred into drive axi master
+# enetered ready
+# leaving from slave driver for next transaction
+# entering into slave driver 
+# leaving from master driver in axi task
+# leavig for next transaction from master driver
+# enetering into master driver
+# enetred into drive axi master
+# enetered ready
+# leaving from slave driver for next transaction
+# entering into slave driver 
+# leaving from master driver in axi task
+# enetred into drive axi master
+# leaving from slave driver for next transaction
+# entering into slave driver 
+# leaving from master driver in axi task
+# enetred into drive axi master
+# leaving from slave driver for next transaction
+# entering into slave driver 
+# leaving from master driver in axi task
+# enetred into drive axi master
+# enetered ready
+# leaving from slave driver for next transaction
+# entering into slave driver 
+# leaving from master driver in axi task
+# enetred into drive axi master
+# leaving from slave driver for next transaction
+# entering into slave driver 
+# leaving from master driver in axi task
+# enetred into drive axi master
+# leaving from slave driver for next transaction
+# entering into slave driver 
+# leaving from master driver in axi task
+# enetred into drive axi master
+# leaving from slave driver for next transaction
+# entering into slave driver 
+# leaving from master driver in axi task
+# enetred into drive axi master
+# enetered ready
+# leaving from slave driver for next transaction
+# entering into slave driver 
+# leaving from master driver in axi task
+# enetred into drive axi master
+# enetered ready
+# leaving from slave driver for next transaction
+# entering into slave driver 
+# leaving from master driver in axi task
+# leavig for next transaction from master driver
+# enetering into master driver
+# enetred into drive axi master
+# enetered ready
+# leaving from slave driver for next transaction
+# entering into slave driver 
+# leaving from master driver in axi task
+# enetred into drive axi master
+# enetered ready
+# leaving from slave driver for next transaction
+# entering into slave driver 
+# leaving from master driver in axi task
+# enetred into drive axi master
+# leaving from slave driver for next transaction
+# entering into slave driver 
+# leaving from master driver in axi task
+# enetred into drive axi master
+# leaving from slave driver for next transaction
+# entering into slave driver 
+# leaving from master driver in axi task
+# leavig for next transaction from master driver
+# enetering into master driver
+# enetred into drive axi master
+# leaving from slave driver for next transaction
+# entering into slave driver 
+# leaving from master driver in axi task
+# enetred into drive axi master
+# enetered ready
+# leaving from slave driver for next transaction
+# entering into slave driver 
+# leaving from master driver in axi task
+# leavig for next transaction from master driver
+# enetering into master driver
+# enetred into drive axi master
+# leaving from slave driver for next transaction
+# entering into slave driver 
+# leaving from master driver in axi task
+# enetred into drive axi master
+# leaving from slave driver for next transaction
+# entering into slave driver 
+# leaving from master driver in axi task
+# enetred into drive axi master
+# enetered ready
+# leaving from slave driver for next transaction
+# entering into slave driver 
+# leaving from master driver in axi task
+# leavig for next transaction from master driver
+# enetering into master driver
+# enetred into drive axi master
+# leaving from slave driver for next transaction
+# entering into slave driver 
+# leaving from master driver in axi task
+# enetred into drive axi master
+# enetered ready
+# leaving from slave driver for next transaction
+# entering into slave driver 
+# leaving from master driver in axi task
+# enetred into drive axi master
+# enetered ready
+# leaving from slave driver for next transaction
+# entering into slave driver 
+# leaving from master driver in axi task
+# enetred into drive axi master
+# enetered ready
+# leaving from slave driver for next transaction
+# entering into slave driver 
+# leaving from master driver in axi task
+# leavig for next transaction from master driver
+# enetering into master driver
+# enetred into drive axi master
+# leaving from slave driver for next transaction
+# entering into slave driver 
+# leaving from master driver in axi task
+# enetred into drive axi master
+# leaving from slave driver for next transaction
+# entering into slave driver 
+# leaving from master driver in axi task
+# enetred into drive axi master
+# leaving from slave driver for next transaction
+# entering into slave driver 
+# leaving from master driver in axi task
+# enetred into drive axi master
+# leaving from slave driver for next transaction
+# entering into slave driver 
+# leaving from master driver in axi task
+# enetred into drive axi master
+# enetered ready
+# leaving from slave driver for next transaction
+# entering into slave driver 
+# leaving from master driver in axi task
+# enetred into drive axi master
+# leaving from slave driver for next transaction
+# entering into slave driver 
+# leaving from master driver in axi task
+# enetred into drive axi master
+# leaving from slave driver for next transaction
+# entering into slave driver 
+# leaving from master driver in axi task
+# leavig for next transaction from master driver
+# enetering into master driver
+# leaving from seq start of master and slave
+# UVM_INFO verilog_src/uvm-1.1d/src/base/uvm_objection.svh(1267) @ 411092000: reporter [TEST_DONE] 'run' phase is ready to proceed to the 'extract' phase
+# 
+# --- UVM Report Summary ---
+# 
+# ** Report counts by severity
+# UVM_INFO :    6
+# UVM_WARNING :    0
+# UVM_ERROR :    0
+# UVM_FATAL :    0
+# ** Report counts by id
+# [AGENT]     2
+# [Questa UVM]     2
+# [RNTST]     1
+# [TEST_DONE]     1
+# ** Note: $finish    : /pkgs/mentor/questa/2019.2_1/questasim/linux_x86_64/../verilog_src/uvm-1.1d/src/base/uvm_root.svh(430)
+#    Time: 411092 ns  Iteration: 61  Instance: /top
+# End time: 01:16:26 on Apr 24,2022, Elapsed time: 0:00:04
+# Errors: 0, Warnings: 0

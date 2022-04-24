@@ -45,18 +45,21 @@ class axi4_slave_driver extends uvm_driver#(axi4_slave_seq_item);
     task run_phase(uvm_phase phase);
 	forever
 	    begin
+        $display("entering into slave driver ");
 	        seq_item_port.get_next_item(req);
             drive_axi(req); 
             this.tr_complete = 0;
 	        seq_item_port.item_done();
+        $display("leaving from slave driver for next transaction");
 	    end
     endtask
 
     task drive_axi(axi4_slave_seq_item req);
         do begin
             @(posedge vif.clk)
+            //$display("enetred slave axi drive task");
             count <= count + 1;
-            if(vif.rst)
+            if(!vif.rst)
             begin
             if(req.ready_before_valid == 1'b1 )
                 vif.m_axis_tready <= 1;
@@ -70,6 +73,7 @@ class axi4_slave_driver extends uvm_driver#(axi4_slave_seq_item);
                     vif.m_axis_tready <= 0;
                 else
                 begin
+                    $display("enetered ready");
                     repeat(req.clk_count) @(posedge vif.clk);
                     vif.m_axis_tready <= 1; //put if else for ready before valid 
                 end 
@@ -83,8 +87,9 @@ class axi4_slave_driver extends uvm_driver#(axi4_slave_seq_item);
                 else
                     vif.m_axis_tready <= 0;
             end
-        end while(!this.tr_complete && vif.rst);
-        if(req.ready_before_valid == 1'b0 && vif.rst)
+            //$display("leaving slave axi drive task");
+        end while(!this.tr_complete && !vif.rst);
+        if(req.ready_before_valid == 1'b0 && !vif.rst)
             @(posedge vif.clk) vif.m_axis_tready <= 0;
     endtask
 

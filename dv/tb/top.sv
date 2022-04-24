@@ -19,7 +19,9 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. */
-//`define UART
+`define UART
+`define DATA_WIDTH 16
+`define COUNT 10
 import uvm_pkg::*;
 `include "uvm_macros.svh"
 `include "./../env/axi_intf.sv"
@@ -83,17 +85,17 @@ module top ;
     initial
     begin
         `ifdef UART
-        inf.prescale = 1;
+        inf.prescale = 8;
         `endif    
-        rst  =  0;
+        rst  =  1;
         #9 ;
-        #2 rst  =  1; 
+        #2 rst  =  0; 
     end
 
     initial
     begin
         $dumpfile("uart_axi4_stream.vcd");
-        $dumpvars(0,top);
+        $dumpvars(0,top,top.inf);
     end
 
    initial

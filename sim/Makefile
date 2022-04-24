@@ -37,3 +37,14 @@ vivado_sim:
 vivado_clean:
 	rm -rf xsim.dir webtalk* xelab* xvlog* xsim* *.log *.vcd *.wdb *.txt
 
+questa: questa_build questa_compile
+	
+questa_build:
+	vlog $(DV_PATH)/tb/top.sv
+
+questa_compile:
+	vsim -c top +UVM_TESTNAME=basic_test -voptargs=+acc=npr -do "run -a; q" 
+
+questa_clean:
+	rm -rf work/ transcript *.txt *.vcd
+	clear

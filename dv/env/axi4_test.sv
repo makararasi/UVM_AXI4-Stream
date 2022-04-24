@@ -45,6 +45,7 @@ class basic_test extends uvm_test;
     task run_phase(uvm_phase phase);
       phase.raise_objection(this);
       begin
+      $display("enetering into seq start of master and slave");
           fork
               begin
                   master_seq.get_print(Print_handle);
@@ -54,7 +55,8 @@ class basic_test extends uvm_test;
                   slave_seq.start(env.slave_agent.slave_seqr);
               end
           join_any
-          disable fork;
+      $display("leaving from seq start of master and slave");
+          //disable fork;
       end
       phase.drop_objection(this);
     endtask
